@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="accent">#AAA</color>
+    <color name="accentLight">#181818</color>
+
+    <color name="bg">#FABF66</color>
+    <color name="bgLight">#F9EAD3</color>
+
+    <color name="selected">#FFF</color>
+    <color name="unselected">#AAA</color>
+
+    <color name="divider">#212121</color>
+
+    <color name="cardDark">#181818</color>
+    <color name="cardDarker">#212121</color>
+    <color name="textboxBg">#121212</color>
+
+</resources>

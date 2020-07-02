@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="46dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.MoreFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/settingsTitle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_max="600dp"
+            android:paddingStart="20dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            fontPath="fonts/bold.ttf"
+            android:text="Settings"
+            android:textColor="?android:textColorPrimary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingPrefix" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/uiCard"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/settingsTitle"
+            app:cardElevation="4dp"
+            app:cardMaxElevation="6dp"
+            app:layout_constraintStart_toStartOf="@id/settingsTitle"
+            app:layout_constraintEnd_toEndOf="@id/settingsTitle"
+            app:cardCornerRadius="1dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:paddingTop="20dp"
+                    android:paddingStart="16dp"
+                    android:paddingBottom="6dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintWidth_max="550dp"
+                    android:id="@+id/title"
+                    android:textAllCaps="true"
+                    fontPath="fonts/bold.ttf"
+                    android:text="@string/user_interface"
+                    android:textColor="@color/bg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:ignore="MissingPrefix" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/nightSwitchLayout"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?selectableItemBackground"
+                    app:layout_constraintTop_toBottomOf="@id/title"
+                    app:layout_constraintStart_toStartOf="@id/title"
+                    app:layout_constraintEnd_toEndOf="@id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/themeTitle"
+                        fontPath="fonts/bold.ttf"
+                        android:text="@string/night_mode"
+                        android:textSize="16sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/nightSwitch"
+                        android:layout_marginEnd="16dp"
+                        android:textColor="?android:textColorPrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/theme"
+                        android:text="@string/night_mode_desc"
+                        android:textSize="16sp"
+                        android:paddingTop="4dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/themeTitle"
+                        app:layout_constraintStart_toStartOf="@id/themeTitle"
+                        app:layout_constraintEnd_toStartOf="@id/nightSwitch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+
+                    <Switch
+                        android:id="@+id/nightSwitch"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/themeTitle"
+                        app:layout_constraintBottom_toBottomOf="@id/theme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/moreCard"
+            app:layout_constraintTop_toBottomOf="@id/uiCard"
+            android:layout_marginTop="16dp"
+            app:cardElevation="4dp"
+            app:cardMaxElevation="6dp"
+            app:layout_constraintStart_toStartOf="@id/uiCard"
+            app:layout_constraintEnd_toEndOf="@id/uiCard"
+            app:cardCornerRadius="1dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:paddingTop="20dp"
+                    android:paddingStart="16dp"
+                    android:paddingBottom="6dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintWidth_max="550dp"
+                    android:id="@+id/moreTitle"
+                    fontPath="fonts/bold.ttf"
+                    android:textAllCaps="true"
+                    android:text="@string/more"
+                    android:textColor="@color/bg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:ignore="MissingPrefix" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/learnMore"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?selectableItemBackground"
+                    app:layout_constraintTop_toBottomOf="@id/moreTitle"
+                    app:layout_constraintStart_toStartOf="@id/moreTitle"
+                    app:layout_constraintEnd_toEndOf="@id/moreTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/learnText"
+                        fontPath="fonts/ClassicSansRounded-Bold.otf"
+                        android:text="Learn more about Covid"
+                        android:textSize="16sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/icon"
+                        android:textColor="?android:textColorPrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        tools:ignore="MissingPrefix" />
+
+                    <ImageView
+                        android:id="@+id/icon"
+                        android:src="@drawable/ic_round_chevron_right_24"
+                        app:layout_constraintTop_toTopOf="@id/learnText"
+                        app:layout_constraintBottom_toBottomOf="@id/learnText"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/otherApps"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?selectableItemBackground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/learnMore"
+                    app:layout_constraintStart_toStartOf="@id/moreTitle"
+                    app:layout_constraintEnd_toEndOf="@id/moreTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/otherAppsText"
+                        fontPath="fonts/ClassicSansRounded-Bold.otf"
+                        android:text="Other Apps"
+                        android:textSize="16sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/otherAppsIcon"
+                        android:textColor="?android:textColorPrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        tools:ignore="MissingPrefix" />
+
+                    <ImageView
+                        android:id="@+id/otherAppsIcon"
+                        android:src="@drawable/ic_round_chevron_right_24"
+                        app:layout_constraintTop_toTopOf="@id/otherAppsText"
+                        app:layout_constraintBottom_toBottomOf="@id/otherAppsText"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <ImageView
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/awareness"
+            app:layout_constraintTop_toBottomOf="@+id/moreCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="150dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

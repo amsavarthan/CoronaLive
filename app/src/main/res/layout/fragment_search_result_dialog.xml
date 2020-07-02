@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    tools:context=".fragments.SearchResultDialogFragment">
+
+    <View
+        android:id="@+id/hidden"
+        android:layout_marginTop="10dp"
+        app:layout_constraintWidth_max="600dp"
+        app:layout_constraintWidth_percent="0.96"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <View
+        android:id="@+id/slider"
+        android:backgroundTint="@color/accent"
+        android:background="@drawable/ic_search_box_bg"
+        app:layout_constraintTop_toBottomOf="@id/hidden"
+        app:layout_constraintStart_toStartOf="@id/hidden"
+        app:layout_constraintEnd_toEndOf="@id/hidden"
+        app:layout_constraintWidth_percent="0.15"
+        app:layout_constraintWidth_max="80dp"
+        android:layout_width="0dp"
+        android:layout_height="6dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/flag"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/slider"
+        app:layout_constraintStart_toStartOf="@id/hidden"
+        android:src="@color/divider"
+        app:civ_border_color="?android:textColorPrimary"
+        app:civ_border_width="0.6dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"/>
+
+    <TextView
+        android:id="@+id/countryName"
+        android:text="Fetching data..."
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toTopOf="@id/flag"
+        app:layout_constraintStart_toEndOf="@id/flag"
+        app:layout_constraintBottom_toBottomOf="@id/flag"
+        android:textStyle="bold"
+        android:textSize="28sp"
+        fontPath="fonts/bold.ttf"
+        android:textColor="?android:textColorPrimary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingPrefix" />
+
+    <LinearLayout
+        android:id="@+id/countryTab"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/flag"
+        app:layout_constraintStart_toStartOf="@id/hidden"
+        app:layout_constraintEnd_toEndOf="@id/hidden"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/ctItem1"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:text="Total"
+            android:padding="10dp"
+            android:textColor="?android:textColorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/ctItem2"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:text="Now"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/ctItem3"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:padding="10dp"
+            android:text="Yesterday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/countryStatus"
+        app:layout_constraintTop_toBottomOf="@id/countryTab"
+        app:layout_constraintStart_toStartOf="@id/hidden"
+        app:layout_constraintEnd_toEndOf="@id/hidden"
+        android:layout_width="0dp"
+        android:columnCount="3"
+        android:rowCount="2"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:layout_columnWeight="1"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_row="0"
+            android:layout_column="0">
+
+            <TextView
+                android:text="Infected"
+                android:textSize="16sp"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryInfectedCount"
+                android:textSize="20sp"
+                android:padding="2dp"
+                android:layout_marginTop="5dp"
+                android:textColor="?android:textColorPrimary"
+                android:text="..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryInfectedCountChange"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:layout_columnWeight="1"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_row="0"
+            android:layout_column="1">
+
+            <TextView
+                android:text="Active"
+                android:padding="2dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryActiveCount"
+                android:textSize="20sp"
+                android:padding="2dp"
+                android:layout_marginTop="5dp"
+                android:textColor="?android:textColorPrimary"
+                android:text="..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryActiveCountChange"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:layout_columnWeight="1"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_row="0"
+            android:layout_column="2">
+
+            <TextView
+                android:text="Critical"
+                android:padding="2dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryCriticalCount"
+                android:textSize="20sp"
+                android:padding="2dp"
+                android:layout_marginTop="5dp"
+                android:textColor="?android:textColorPrimary"
+                android:text="..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryCriticalCountChange"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:layout_columnWeight="1"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_row="1"
+            android:layout_column="0">
+
+            <TextView
+                android:text="Recovered"
+                android:padding="2dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryRecoveredCount"
+                android:textSize="20sp"
+                android:padding="2dp"
+                android:layout_marginTop="5dp"
+                android:textColor="?android:textColorPrimary"
+                android:text="..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryRecoveredCountChange"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:layout_columnWeight="1"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_row="1"
+            android:layout_column="1">
+
+            <TextView
+                android:text="Deaths"
+                android:padding="2dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryDeathCount"
+                android:textSize="20sp"
+                android:padding="2dp"
+                android:layout_marginTop="5dp"
+                android:textColor="?android:textColorPrimary"
+                android:text="..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/countryDeathCountChange"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/cUpdated"
+        android:text="Last Updated : "
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintStart_toStartOf="@id/hidden"
+        app:layout_constraintEnd_toEndOf="@id/hidden"
+        app:layout_constraintTop_toBottomOf="@id/countryStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

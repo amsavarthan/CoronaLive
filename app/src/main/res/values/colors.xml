@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#fff</color>
+
+    <color name="bg">#FABF66</color>
+    <color name="bgLight">#F9EAD3</color>
+
+    <color name="accent">#FABF66</color>
+    <color name="accentLight">#F9EAD3</color>
+
+    <color name="selected">#000</color>
+    <color name="unselected">#CCC</color>
+
+    <color name="textboxBg">#fff</color>
+    <color name="divider">#eee</color>
+
+    <color name="p1">#FF986B</color>
+    <color name="p2">#989CFF</color>
+    <color name="p3">#FFC86D</color>
+    <color name="p4">#8BDEAA</color>
+    <color name="p5">#FAA0F7</color>
+    <color name="p6">#45DBDC</color>
+    <color name="black">#212121</color>
+    <color name="cardDark">#222B45</color>
+    <color name="cardDarker">#1F273D</color>
+    <color name="yellow">#FFA825</color>
+    <color name="green">#8BC34A</color>
+    <color name="red">#F44336</color>
+
+</resources>

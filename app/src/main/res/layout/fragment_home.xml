@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    tools:context=".fragments.HomeFragment">
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:paddingBottom="20dp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <View
+           android:id="@+id/bg"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintBottom_toBottomOf="@id/piv"
+           android:background="@drawable/ic_home_top_bg"
+           android:layout_width="match_parent"
+           android:layout_height="0dp"/>
+
+       <TextView
+           android:id="@+id/covidTitle"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           android:paddingStart="10dp"
+           android:paddingEnd="10dp"
+           android:paddingTop="5dp"
+           android:textStyle="bold"
+           app:layout_constraintWidth_max="600dp"
+           app:layout_constraintWidth_percent=".9"
+           android:textSize="32sp"
+           android:layout_marginTop="40dp"
+           android:text="Covid-19"
+           android:textColor="@color/bg"
+           fontPath="fonts/bold.ttf"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           tools:ignore="MissingPrefix" />
+
+       <com.kenilt.loopingviewpager.widget.LoopingViewPager
+           android:id="@+id/viewPager"
+           app:layout_constraintTop_toBottomOf="@id/covidTitle"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintWidth_max="600dp"
+           app:layout_constraintBottom_toTopOf="@id/piv"
+           android:layout_width="0dp"
+           android:layout_height="150dp"/>
+
+       <com.rd.PageIndicatorView
+           android:id="@+id/piv"
+           app:piv_selectedColor="@color/bg"
+           app:piv_unselectedColor="#80000000"
+           app:piv_radius="3dp"
+           android:paddingBottom="20dp"
+           android:layout_marginStart="15dp"
+           android:layout_marginBottom="30dp"
+           app:piv_interactiveAnimation="true"
+           app:layout_constraintTop_toBottomOf="@id/viewPager"
+           app:layout_constraintStart_toStartOf="@id/covidTitle"
+           app:layout_constraintBottom_toBottomOf="@id/bg"
+           app:piv_viewPager="@id/viewPager"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"/>
+
+       <com.google.android.material.chip.Chip
+           android:id="@+id/chip"
+           android:layout_marginTop="10dp"
+           app:chipIcon="@drawable/ic_twotone_public_24"
+           android:text="Learn more on who.int"
+           app:layout_constraintStart_toStartOf="@id/covidTitle"
+           app:layout_constraintEnd_toEndOf="@id/covidTitle"
+           app:layout_constraintTop_toBottomOf="@id/bg"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"/>
+
+       <LinearLayout
+           android:id="@+id/symptomImages"
+           android:layout_marginTop="10dp"
+           app:layout_constraintStart_toStartOf="@id/covidTitle"
+           app:layout_constraintEnd_toEndOf="@id/covidTitle"
+           app:layout_constraintTop_toBottomOf="@id/chip"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content">
+
+           <LinearLayout
+               android:padding="5dp"
+               android:gravity="center"
+               android:layout_weight="1"
+               android:orientation="vertical"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content">
+
+               <ImageView
+                   android:src="@drawable/symptom_fever"
+                   android:layout_width="wrap_content"
+                   android:layout_height="100dp"/>
+
+               <TextView
+                   android:text="@string/fever"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:padding="5dp"
+               android:gravity="center"
+               android:layout_weight="1"
+               android:orientation="vertical"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content">
+
+               <ImageView
+                   android:src="@drawable/symptom_cough"
+                   android:layout_width="wrap_content"
+                   android:layout_height="100dp"/>
+
+               <TextView
+                   android:text="@string/dry_cough"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:padding="5dp"
+               android:gravity="center"
+               android:layout_weight="1"
+               android:orientation="vertical"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content">
+
+               <ImageView
+                   android:src="@drawable/symptom_tiredness"
+                   android:layout_width="wrap_content"
+                   android:layout_height="100dp"/>
+
+               <TextView
+                   android:text="@string/tiredness"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+
+           </LinearLayout>
+
+       </LinearLayout>
+
+       <View
+           android:id="@+id/divider"
+           android:layout_marginTop="10dp"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toBottomOf="@id/symptomImages"
+           app:layout_constraintBottom_toTopOf="@id/introTitle"
+           android:background="@color/divider"
+           android:layout_width="match_parent"
+           android:layout_height="2dp"/>
+
+       <TextView
+           android:id="@+id/introTitle"
+           app:layout_constraintStart_toStartOf="@id/covidTitle"
+           app:layout_constraintEnd_toEndOf="@id/covidTitle"
+           app:layout_constraintTop_toBottomOf="@id/divider"
+           android:paddingTop="20dp"
+           android:textSize="17sp"
+           android:paddingBottom="20dp"
+           android:text="@string/intro_text"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"/>
+
+       <View
+           android:id="@+id/divider2"
+           app:layout_constraintStart_toStartOf="@id/covidTitle"
+           app:layout_constraintEnd_toEndOf="@id/covidTitle"
+           app:layout_constraintTop_toBottomOf="@id/introTitle"
+           android:background="@color/divider"
+           android:layout_width="0dp"
+           android:layout_height="2dp"/>
+
+       <TextView
+           android:id="@+id/content"
+           app:layout_constraintStart_toStartOf="@id/covidTitle"
+           app:layout_constraintEnd_toEndOf="@id/covidTitle"
+           app:layout_constraintTop_toBottomOf="@id/divider2"
+           android:paddingTop="20dp"
+           android:textSize="17sp"
+           android:paddingBottom="20dp"
+           android:text="@string/symptoms_text"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"/>
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
