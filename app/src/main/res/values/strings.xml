@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Korona</string>
+    <string name="app_name">CoronaLive</string>
     <string name="subtext">Let\'s check your location info!</string>
     <string name="menu_home">Home</string>
     <string name="menu_more">More</string>
