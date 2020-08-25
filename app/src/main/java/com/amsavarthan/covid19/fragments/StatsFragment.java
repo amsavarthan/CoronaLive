@@ -5,9 +5,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,6 +19,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -30,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amsavarthan.covid19.MainActivity;
 import com.amsavarthan.covid19.R;
 import com.amsavarthan.covid19.RecyclerAdapter;
 import com.amsavarthan.covid19.databinding.FragmentStatsBinding;
@@ -56,12 +61,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.content.Context.LOCATION_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 
 public class StatsFragment extends Fragment implements onItemClickListener {
@@ -69,7 +72,6 @@ public class StatsFragment extends Fragment implements onItemClickListener {
     private static final String TAG = StatsFragment.class.getSimpleName();
     private FragmentStatsBinding binding;
     private SharedPreferences dataSharedPref;
-    private LocationManager locationManager;
     private Stat worldStatToday, worldStatYesterday, countryStatToday, countryStatYesterday;
     private String[] countries;
     private List<Country> mCountries;
@@ -90,114 +92,26 @@ public class StatsFragment extends Fragment implements onItemClickListener {
         AndroidNetworking.forceCancelAll();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == 100) {
 
-            if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
+    private void hideCountryStats() {
+        binding.flag.setVisibility(View.GONE);
+        binding.countryName.setVisibility(View.GONE);
+        binding.csPbar.setVisibility(View.GONE);
+        binding.countryTab.setVisibility(View.GONE);
+        binding.countryStatus.setVisibility(View.GONE);
+        binding.cUpdated.setVisibility(View.GONE);
+        binding.divider.setVisibility(View.GONE);
+    }
 
-                @SuppressLint("MissingPermission") Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                try {
-                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-                    List<Address> addressList;
-                    addressList=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-
-                    String country=addressList.get(0).getCountryName();
-
-                    //get country stats
-                    AndroidNetworking.get("https://corona.lmao.ninja/v2/countries/"+country)
-                            .addQueryParameter("yesterday", "false")
-                            .addQueryParameter("strict", "true")
-                            .addQueryParameter("query", "")
-                            .setTag("countryReq1")
-                            .setPriority(Priority.IMMEDIATE)
-                            .build()
-                            .getAsJSONObject(new JSONObjectRequestListener() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-
-                                    try {
-                                        JSONObject countryInfo = response.getJSONObject("countryInfo");
-                                        countryStatToday.setFlag(countryInfo.getString("flag"));
-                                        countryStatToday.setCountry(response.getString("country"));
-                                        countryStatToday.setContinent(response.getString("continent"));
-                                        countryStatToday.setLastUpdated(response.getLong("updated"));
-                                        countryStatToday.setTotalCases(response.getInt("cases"));
-                                        countryStatToday.setTodayCases(response.getInt("todayCases"));
-                                        countryStatToday.setDeaths(response.getInt("deaths"));
-                                        countryStatToday.setTodayDeaths(response.getInt("todayDeaths"));
-                                        countryStatToday.setRecovered(response.getInt("recovered"));
-                                        countryStatToday.setTodayRecovered(response.getInt("todayRecovered"));
-                                        countryStatToday.setTodayActive(response.getInt("active"));
-                                        countryStatToday.setTodayCritical(response.getInt("critical"));
-                                        countryStatToday.setTests(response.getInt("tests"));
-                                        countryStatToday.setPopulation(response.getInt("population"));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    AndroidNetworking.get("https://corona.lmao.ninja/v2/countries/India")
-                                            .addQueryParameter("yesterday", "true")
-                                            .addQueryParameter("strict", "true")
-                                            .addQueryParameter("query", "")
-                                            .setTag("countryReq2")
-                                            .setPriority(Priority.IMMEDIATE)
-                                            .build()
-                                            .getAsJSONObject(new JSONObjectRequestListener() {
-                                                @Override
-                                                public void onResponse(JSONObject response) {
-
-                                                    try {
-                                                        countryStatYesterday.setLastUpdated(response.getLong("updated"));
-                                                        countryStatYesterday.setTotalCases(response.getInt("cases"));
-                                                        countryStatYesterday.setTodayCases(response.getInt("todayCases"));
-                                                        countryStatYesterday.setDeaths(response.getInt("deaths"));
-                                                        countryStatYesterday.setTodayDeaths(response.getInt("todayDeaths"));
-                                                        countryStatYesterday.setRecovered(response.getInt("recovered"));
-                                                        countryStatYesterday.setTodayRecovered(response.getInt("todayRecovered"));
-                                                        countryStatYesterday.setTodayActive(response.getInt("active"));
-                                                        countryStatYesterday.setTodayCritical(response.getInt("critical"));
-                                                        countryStatYesterday.setTests(response.getInt("tests"));
-                                                        countryStatYesterday.setPopulation(response.getInt("population"));
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-
-                                                    dataSharedPref.edit().putString("countryStatToday", countryStatToday.serialize()).apply();
-                                                    dataSharedPref.edit().putString("countryStatYesterday", countryStatYesterday.serialize()).apply();
-                                                    updateCountryUI(countryStatToday, countryStatYesterday,"total");
-
-                                                }
-
-                                                @Override
-                                                public void onError(ANError anError) {
-
-                                                }
-                                            });
-
-                                }
-
-                                @Override
-                                public void onError(ANError anError) {
-
-                                }
-                            });
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            } else {
-
-                Toast.makeText(getContext(), "Location permission has been denied", Toast.LENGTH_SHORT).show();
-
-            }
-
-        }
-
+    private void showCountryStats() {
+        binding.flag.setVisibility(View.VISIBLE);
+        binding.countryName.setVisibility(View.VISIBLE);
+        binding.csPbar.setVisibility(View.VISIBLE);
+        binding.countryTab.setVisibility(View.VISIBLE);
+        binding.countryStatus.setVisibility(View.VISIBLE);
+        binding.cUpdated.setVisibility(View.VISIBLE);
+        binding.divider.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -253,7 +167,6 @@ public class StatsFragment extends Fragment implements onItemClickListener {
 
         binding.swipeRefreshLayout.setRefreshing(true);
         dataSharedPref = getContext().getSharedPreferences("data", MODE_PRIVATE);
-        binding.countryName.setText(String.format("%s Status", dataSharedPref.getString("countryName","Country")));
 
         if (!isOnline())
             Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
@@ -261,113 +174,17 @@ public class StatsFragment extends Fragment implements onItemClickListener {
         worldStatToday = Stat.getInstance(dataSharedPref.getString("worldStatToday", ""));
         worldStatYesterday = Stat.getInstance(dataSharedPref.getString("worldStatYesterday", ""));
         updateWorldUI(worldStatToday, worldStatYesterday,"total");
+        binding.countryName.setText(String.format("%s Status", dataSharedPref.getString("countryName","")));
 
         countryStatToday = Stat.getInstance(dataSharedPref.getString("countryStatToday", ""));
         countryStatYesterday = Stat.getInstance(dataSharedPref.getString("countryStatYesterday", ""));
         updateCountryUI(countryStatToday, countryStatYesterday,"total");
 
-        locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 100);
-        } else {
+        updateData(dataSharedPref.getString("countryName",""));
 
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-            try {
-                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-                List<Address> addressList;
-                addressList=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-
-                String country=addressList.get(0).getCountryName();
-                binding.countryName.setText(String.format("%s Status", country));
-                dataSharedPref.edit().putString("countryName",country).apply();
-
-                //get country stats
-                AndroidNetworking.get("https://corona.lmao.ninja/v2/countries/"+country)
-                        .addQueryParameter("yesterday", "false")
-                        .addQueryParameter("strict", "true")
-                        .addQueryParameter("query", "")
-                        .setTag("countryReq1")
-                        .setPriority(Priority.IMMEDIATE)
-                        .build()
-                        .getAsJSONObject(new JSONObjectRequestListener() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-
-                                try {
-                                    JSONObject countryInfo = response.getJSONObject("countryInfo");
-                                    countryStatToday.setFlag(countryInfo.getString("flag"));
-                                    countryStatToday.setCountry(response.getString("country"));
-                                    countryStatToday.setContinent(response.getString("continent"));
-                                    countryStatToday.setLastUpdated(response.getLong("updated"));
-                                    countryStatToday.setTotalCases(response.getInt("cases"));
-                                    countryStatToday.setTodayCases(response.getInt("todayCases"));
-                                    countryStatToday.setDeaths(response.getInt("deaths"));
-                                    countryStatToday.setTodayDeaths(response.getInt("todayDeaths"));
-                                    countryStatToday.setRecovered(response.getInt("recovered"));
-                                    countryStatToday.setTodayRecovered(response.getInt("todayRecovered"));
-                                    countryStatToday.setTodayActive(response.getInt("active"));
-                                    countryStatToday.setTodayCritical(response.getInt("critical"));
-                                    countryStatToday.setTests(response.getInt("tests"));
-                                    countryStatToday.setPopulation(response.getInt("population"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                AndroidNetworking.get("https://corona.lmao.ninja/v2/countries/"+country)
-                                        .addQueryParameter("yesterday", "true")
-                                        .addQueryParameter("strict", "true")
-                                        .addQueryParameter("query", "")
-                                        .setTag("countryReq2")
-                                        .setPriority(Priority.IMMEDIATE)
-                                        .build()
-                                        .getAsJSONObject(new JSONObjectRequestListener() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
-
-                                                try {
-                                                    countryStatYesterday.setLastUpdated(response.getLong("updated"));
-                                                    countryStatYesterday.setTotalCases(response.getInt("cases"));
-                                                    countryStatYesterday.setTodayCases(response.getInt("todayCases"));
-                                                    countryStatYesterday.setDeaths(response.getInt("deaths"));
-                                                    countryStatYesterday.setTodayDeaths(response.getInt("todayDeaths"));
-                                                    countryStatYesterday.setRecovered(response.getInt("recovered"));
-                                                    countryStatYesterday.setTodayRecovered(response.getInt("todayRecovered"));
-                                                    countryStatYesterday.setTodayActive(response.getInt("active"));
-                                                    countryStatYesterday.setTodayCritical(response.getInt("critical"));
-                                                    countryStatYesterday.setTests(response.getInt("tests"));
-                                                    countryStatYesterday.setPopulation(response.getInt("population"));
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-
-                                                dataSharedPref.edit().putString("countryStatToday", countryStatToday.serialize()).apply();
-                                                dataSharedPref.edit().putString("countryStatYesterday", countryStatYesterday.serialize()).apply();
-                                                updateCountryUI(countryStatToday, countryStatYesterday,"total");
-
-                                            }
-
-                                            @Override
-                                            public void onError(ANError anError) {
-                                                Log.e(TAG, "onError: ", anError);
-                                            }
-                                        });
-
-                            }
-
-                            @Override
-                            public void onError(ANError anError) {
-                                Log.e(TAG, "onError: ", anError);
-                            }
-                        });
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        if(binding.csPbar.getVisibility()!=View.GONE){
+            fadeIn(binding.csPbar);
         }
-
-        fadeIn(binding.csPbar);
         fadeIn(binding.wsPbar);
 
         //get world stats
@@ -468,6 +285,99 @@ public class StatsFragment extends Fragment implements onItemClickListener {
 
         binding.swipeRefreshLayout.setRefreshing(false);
 
+    }
+
+    private void updateData(String country) {
+        try {
+            if(country.isEmpty()){
+                hideCountryStats();
+                return;
+            }else{
+                showCountryStats();
+            }
+            binding.countryName.setText(String.format("%s Status", country));
+            //get country stats
+            AndroidNetworking.get("https://corona.lmao.ninja/v2/countries/"+country)
+                    .addQueryParameter("yesterday", "false")
+                    .addQueryParameter("strict", "true")
+                    .addQueryParameter("query", "")
+                    .setTag("countryReq1")
+                    .setPriority(Priority.IMMEDIATE)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            try {
+                                JSONObject countryInfo = response.getJSONObject("countryInfo");
+                                countryStatToday.setFlag(countryInfo.getString("flag"));
+                                countryStatToday.setCountry(response.getString("country"));
+                                countryStatToday.setContinent(response.getString("continent"));
+                                countryStatToday.setLastUpdated(response.getLong("updated"));
+                                countryStatToday.setTotalCases(response.getInt("cases"));
+                                countryStatToday.setTodayCases(response.getInt("todayCases"));
+                                countryStatToday.setDeaths(response.getInt("deaths"));
+                                countryStatToday.setTodayDeaths(response.getInt("todayDeaths"));
+                                countryStatToday.setRecovered(response.getInt("recovered"));
+                                countryStatToday.setTodayRecovered(response.getInt("todayRecovered"));
+                                countryStatToday.setTodayActive(response.getInt("active"));
+                                countryStatToday.setTodayCritical(response.getInt("critical"));
+                                countryStatToday.setTests(response.getInt("tests"));
+                                countryStatToday.setPopulation(response.getInt("population"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            AndroidNetworking.get("https://corona.lmao.ninja/v2/countries/"+country)
+                                    .addQueryParameter("yesterday", "true")
+                                    .addQueryParameter("strict", "true")
+                                    .addQueryParameter("query", "")
+                                    .setTag("countryReq2")
+                                    .setPriority(Priority.IMMEDIATE)
+                                    .build()
+                                    .getAsJSONObject(new JSONObjectRequestListener() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            try {
+                                                countryStatYesterday.setLastUpdated(response.getLong("updated"));
+                                                countryStatYesterday.setTotalCases(response.getInt("cases"));
+                                                countryStatYesterday.setTodayCases(response.getInt("todayCases"));
+                                                countryStatYesterday.setDeaths(response.getInt("deaths"));
+                                                countryStatYesterday.setTodayDeaths(response.getInt("todayDeaths"));
+                                                countryStatYesterday.setRecovered(response.getInt("recovered"));
+                                                countryStatYesterday.setTodayRecovered(response.getInt("todayRecovered"));
+                                                countryStatYesterday.setTodayActive(response.getInt("active"));
+                                                countryStatYesterday.setTodayCritical(response.getInt("critical"));
+                                                countryStatYesterday.setTests(response.getInt("tests"));
+                                                countryStatYesterday.setPopulation(response.getInt("population"));
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            dataSharedPref.edit().putString("countryStatToday", countryStatToday.serialize()).apply();
+                                            dataSharedPref.edit().putString("countryStatYesterday", countryStatYesterday.serialize()).apply();
+                                            updateCountryUI(countryStatToday, countryStatYesterday,"total");
+
+                                        }
+
+                                        @Override
+                                        public void onError(ANError anError) {
+                                            Log.e(TAG, "onError: ", anError);
+                                        }
+                                    });
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e(TAG, "onError: ", anError);
+                        }
+                    });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void getMostAffected(String sortedBy) {
@@ -857,4 +767,5 @@ public class StatsFragment extends Fragment implements onItemClickListener {
         SearchResultDialogFragment dialogFragment=SearchResultDialogFragment.newInstance(country.getCountryName());
         dialogFragment.show(getChildFragmentManager(),dialogFragment.getTag());
     }
+
 }
